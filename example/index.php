@@ -3,9 +3,9 @@
 use RusaDrako\db_update\DB;
 use RusaDrako\driver_db\DB as DB_driver;
 
-require_once('../src/autoload.php');
-$config=require_once('config.php');
-require_once('../../driver_db/src/autoload.php');
+require_once(__DIR__ . '/../src/autoload.php');
+$config=require_once(__DIR__ . '/config.php');
+require_once(__DIR__ . '/../../driver_db/src/autoload.php');
 
 $db = new DB_driver();
 
