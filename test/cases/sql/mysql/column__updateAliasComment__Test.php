@@ -5,9 +5,9 @@ namespace RusaDrako\db_update\cases\sql\mysql;
 require_once('_abstract_case.php');
 
 /**  */
-class column__updateCommentAlias__Test extends _abstract_case {
+class column__updateAliasComment__Test extends _abstract_case {
 	protected $class_name = \RusaDrako\db_update\sql\mysql\column::class;
-	protected $method_name = 'updateCommentAlias';
+	protected $method_name = 'updateAliasComment';
 
 	/**  */
 	public function test_array() {

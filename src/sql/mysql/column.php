@@ -51,38 +51,38 @@ SQL;
 		$data=array_merge($data_control, $data);
 
 		# Настройка имени
-		$template['name']=static::updateNameAlias($data['name']);
+		$template['name']=static::updateAliasName($data['name']);
 		# Настройка типа
-		$template['type']=static::updateTypeAlias($data['type']);
+		$template['type']=static::updateAliasType($data['type']);
 		# Настройка значения null
-		$template['is_null']=static::updateIsNullAlias($data['type']);
+		$template['is_null']=static::updateAliasIsNull($data['type']);
 		# Настройка значения по умолчанию
-		$template['default']=static::updateDefaultAlias($data['default'], $data['is_null']);
+		$template['default']=static::updateAliasDefault($data['default'], $data['is_null']);
 		# Настройка комментария
-		$template['comment']==static::updateCommentAlias($data['comment']);
+		$template['comment']==static::updateAliasComment($data['comment']);
 
 		return $template;
 	}
 
 	/**  */
-	public static function updateNameAlias($data){
+	public static function updateAliasName($data){
 		return (string) $data;
 	}
 
 	/**  */
-	public static function updateTypeAlias($data){
+	public static function updateAliasType($data){
 		return array_key_exists($data, static::$type_aliases)
 			? static::$type_aliases[$data]
 			: $data;
 	}
 
 	/**  */
-	public static function updateIsNullAlias($data){
+	public static function updateAliasIsNull($data){
 		return $data ? "NULL" : "NOT NULL";
 	}
 
 	/**  */
-	public static function updateDefaultAlias($data_def, $data_is_null){
+	public static function updateAliasDefault($data_def, $data_is_null){
 		if($data_def===null)                                  { return NULL;}
 		if(strtoupper($data_def)=='NULL' && !$data_is_null)   { return NULL;}
 		if(strtoupper($data_def)=='NULL')                     { return 'DEFAULT NULL';}
@@ -91,7 +91,7 @@ SQL;
 	}
 
 	/**  */
-	public static function updateCommentAlias($data){
+	public static function updateAliasComment($data){
 		return $data ? "COMMENT '{$data}'" : '';
 	}
 
