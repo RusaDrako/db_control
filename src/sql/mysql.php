@@ -27,13 +27,13 @@ class mysql implements inf_sql{
 		return column::getAllColumns($table_obj->getName(), $table_obj->getDb()->getName());
 	}
 
-	public function updateSetting($data){
-		return column::updateSetting($data);
+	public function updateAliasSetting($data){
+		return column::updateAliasSetting($data);
 	}
 
 	public function setColumnTemplate($data){
 		$result=[];
-		foreach($this->updateSetting($data) as $k=>$v){
+		foreach($this->updateAliasSetting($data) as $k=>$v){
 			$result[":column_{$k}:"]=$v;
 		}
 		return $result;
@@ -47,8 +47,8 @@ class mysql implements inf_sql{
 		return column::getSQLColumnChangeTemplate();
 	}
 
-	public function updateColumnHandler($data){
-		return column::updateColumnHandler($data);
+	public function updateDBColumnData($data){
+		return column::updateDBColumnData($data);
 	}
 
 

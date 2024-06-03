@@ -97,7 +97,7 @@ class Table extends _template {
 
 		$exists=[];
 		foreach($columns as $k=>$v){
-			$data=$this->db->getSQLObject()->updateColumnHandler($v);
+			$data=$this->db->getSQLObject()->updateDBColumnData($v);
 			$exists[$data['name']]=$data;
 		}
 

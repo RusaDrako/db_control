@@ -38,7 +38,7 @@ SQL;
 	}
 
 	/**  */
-	public static function updateSetting(array $data){
+	public static function updateAliasSetting(array $data){
 		$data_control=[
 			"name"=>null,
 			"type"=>null,
@@ -96,7 +96,7 @@ SQL;
 	}
 
 	/**  */
-	public static function updateColumnHandler($data){
+	public static function updateDBColumnData($data){
 		$data_control=[
 			"name"=>$data["COLUMN_NAME"],
 			"type"=>$data["DATA_TYPE"] . (($data["CHARACTER_MAXIMUM_LENGTH"] && !in_array($data["DATA_TYPE"], ['text']))? "({$data["CHARACTER_MAXIMUM_LENGTH"]})" : ''),
