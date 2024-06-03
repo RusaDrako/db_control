@@ -13,6 +13,9 @@ trait trt_status{
 	/** @var string Маркер удаления элемента */
 	protected $is_delete;
 
+	/** @var string Маркер удаления элемента */
+	protected $updated;
+
 	public function setIsNew(bool $value){
 		$this->is_new= (bool) $value;
 		return $this;
@@ -41,9 +44,12 @@ trait trt_status{
 	}
 
 	public function checkData($data){
-		foreach($this->data as $k=>$v){
-			if (array_key_exists($k, $data)) {
-				if($v!==$data[$k]){
+		$data_db=$this->db->getSQLObject()->updateSetting($data);
+		$data_mod=$this->db->getSQLObject()->updateSetting($this->data);
+		foreach($data_mod as $k=>$v){
+			if (array_key_exists($k, $data_db)) {
+				if($v!==$data_db[$k]){
+					$this->updated[$k]=['old'=>$data_db[$k], 'new'=>$v];
 					$this->setUpdate(true);
 				}
 			}

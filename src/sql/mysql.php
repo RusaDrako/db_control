@@ -27,8 +27,16 @@ class mysql implements inf_sql{
 		return column::getAllColumns($table_obj->getName(), $table_obj->getDb()->getName());
 	}
 
+	public function updateSetting($data){
+		return column::updateSetting($data);
+	}
+
 	public function setColumnTemplate($data){
-		return column::setTemplate($data);
+		$result=[];
+		foreach($this->updateSetting($data) as $k=>$v){
+			$result[":column_{$k}:"]=$v;
+		}
+		return $result;
 	}
 
 	public function getSQLColumnAddTemplate(){

@@ -132,6 +132,7 @@ class Table extends _template {
 
 		foreach($this->columns as $k=>$v){
 			$sql=$v->getSQLUpdate();
+			if(!$sql) { continue;}
 			$sql=$this->updateTemplate($sql);
 			$result["{$v->getStatus()} {$this->name}.{$k}"]=$sql;
 		}

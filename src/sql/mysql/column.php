@@ -38,7 +38,7 @@ SQL;
 	}
 
 	/**  */
-	public static function setTemplate(array $data){
+	public static function updateSetting(array $data){
 		$data_control=[
 			"name"=>null,
 			"type"=>null,
@@ -51,17 +51,17 @@ SQL;
 		$data=array_merge($data_control, $data);
 
 		# Настройка имени
-		$template[':column_name:']=$data['name'];
+		$template['name']=$data['name'];
 		# Настройка типа
-		$template[':column_type:']=static::updateTypeAlias($data['type']);
+		$template['type']=static::updateTypeAlias($data['type']);
 		# Настройка значения null
-		$template[':column_is_null:']=$data['is_null']
+		$template['is_null']=$data['is_null']
 			? "NULL"
 			: "NOT NULL";
 		# Настройка значения по умолчанию
-		$template[':column_default:']=static::updateDefaultAlias($data['default'], $data['is_null']);
+		$template['default']=static::updateDefaultAlias($data['default'], $data['is_null']);
 		# Настройка комментария
-		$template[':column_comment:']=$data['comment']
+		$template['comment']=$data['comment']
 			? "COMMENT '{$data['comment']}'"
 			: '';
 
@@ -88,9 +88,9 @@ SQL;
 	public static function updateColumnHandler($data){
 		$data_control=[
 			"name"=>$data["COLUMN_NAME"],
-			"type"=>$data["DATA_TYPE"],
+			"type"=>$data["DATA_TYPE"] . (($data["CHARACTER_MAXIMUM_LENGTH"] && !in_array($data["DATA_TYPE"], ['text']))? "({$data["CHARACTER_MAXIMUM_LENGTH"]})" : ''),
 			"is_null"=>strtoupper($data["IS_NULLABLE"])=='YES' ? 1 : 0,
-			"default"=>$data["COLUMN_DEFAULT"],
+			"default"=>($data["COLUMN_DEFAULT"]===NULL && strtoupper($data["IS_NULLABLE"])=='YES') ? 'NULL' : $data["COLUMN_DEFAULT"],
 			"comment"=>$data["COLUMN_COMMENT"],
 		];
 		return $data_control;
