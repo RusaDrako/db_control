@@ -51,21 +51,22 @@ SQL;
 		$data=array_merge($data_control, $data);
 
 		# Настройка имени
-		$template['name']=$data['name'];
+		$template['name']=static::updateNameAlias($data['name']);
 		# Настройка типа
 		$template['type']=static::updateTypeAlias($data['type']);
 		# Настройка значения null
-		$template['is_null']=$data['is_null']
-			? "NULL"
-			: "NOT NULL";
+		$template['is_null']=static::updateIsNullAlias($data['type']);
 		# Настройка значения по умолчанию
 		$template['default']=static::updateDefaultAlias($data['default'], $data['is_null']);
 		# Настройка комментария
-		$template['comment']=$data['comment']
-			? "COMMENT '{$data['comment']}'"
-			: '';
+		$template['comment']==static::updateCommentAlias($data['comment']);
 
 		return $template;
+	}
+
+	/**  */
+	public static function updateNameAlias($data){
+		return (string) $data;
 	}
 
 	/**  */
@@ -76,12 +77,22 @@ SQL;
 	}
 
 	/**  */
+	public static function updateIsNullAlias($data){
+		return $data ? "NULL" : "NOT NULL";
+	}
+
+	/**  */
 	public static function updateDefaultAlias($data_def, $data_is_null){
 		if($data_def===null)                                  { return NULL;}
 		if(strtoupper($data_def)=='NULL' && !$data_is_null)   { return NULL;}
 		if(strtoupper($data_def)=='NULL')                     { return 'DEFAULT NULL';}
 		if(strtoupper($data_def)=='CURRENT_TIMESTAMP')        { return 'DEFAULT CURRENT_TIMESTAMP';}
 		return "DEFAULT '{$data_def}'";
+	}
+
+	/**  */
+	public static function updateCommentAlias($data){
+		return $data ? "COMMENT '{$data}'" : '';
 	}
 
 	/**  */
