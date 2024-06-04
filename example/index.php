@@ -30,13 +30,15 @@ $arr=$dbUpdate->updateDB();
 //exit;
 
 foreach($arr as $k=>$v){
+	echo PHP_EOL;
+	echo '================================================================================';
+	echo PHP_EOL;
 	echo $k;
 	if(substr($k, 0, 1)!='-'){
-		echo ' - выполнить';
-		echo ' - ' . $v;
+		echo PHP_EOL;
+		echo "\t- выполнить";
 //		$dbConnector->query($v);
 	}
 	echo PHP_EOL;
 	echo "\t{$v}";
-	echo PHP_EOL;
 }
