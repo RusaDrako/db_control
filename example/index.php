@@ -37,7 +37,15 @@ foreach($arr as $k=>$v){
 	if(substr($k, 0, 1)!='-'){
 		echo PHP_EOL;
 		echo "\t- выполнить";
-//		$dbConnector->query($v);
+		try{
+			$dbConnector->query($v);
+		}catch(\ RusaDrako\driver_db\drivers\DriverDB $e){
+			echo PHP_EOL;
+			echo "\t{$e->getMessage()}";
+		}catch(\Exception $e){
+			echo PHP_EOL;
+			echo "\t" . get_class($e) . " {$e->getMessage()}";
+		}
 	}
 	echo PHP_EOL;
 	echo "\t{$v}";
