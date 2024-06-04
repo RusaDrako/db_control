@@ -26,7 +26,7 @@ class column__updateAliasDefault__Test extends _abstract_case {
 	public function inputDataArray(){
 		return [
 			['input'=>['$data_def'=>NULL, '$data_is_null'=>0], 'expected'=>NULL],
-			['input'=>['$data_def'=>NULL, '$data_is_null'=>1], 'expected'=>NULL],
+			['input'=>['$data_def'=>NULL, '$data_is_null'=>1], 'expected'=>'DEFAULT NULL'],
 			['input'=>['$data_def'=>'NULL', '$data_is_null'=>0], 'expected'=>NULL],
 			['input'=>['$data_def'=>'NULL', '$data_is_null'=>1], 'expected'=>'DEFAULT NULL'],
 			['input'=>['$data_def'=>'CURRENT_TIMESTAMP', '$data_is_null'=>0], 'expected'=>'DEFAULT CURRENT_TIMESTAMP'],

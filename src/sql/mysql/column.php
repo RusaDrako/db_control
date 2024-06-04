@@ -90,6 +90,7 @@ SQL;
 
 	/**  */
 	public static function updateAliasDefault($data_def, $data_is_null){
+		if($data_def===null && $data_is_null)                 { return 'DEFAULT NULL';}
 		if($data_def===null)                                  { return NULL;}
 		if(strtoupper($data_def)=='NULL' && !$data_is_null)   { return NULL;}
 		if(strtoupper($data_def)=='NULL')                     { return 'DEFAULT NULL';}

@@ -70,6 +70,44 @@ class column__updateAliasSetting__Test extends _abstract_case {
 					array (
 						'name' => 'user_id',
 						'type' => 'id',
+						'is_null' => 1,
+						'default' => null,
+						'comment' => "Проверка is_null=1, default=null",
+					)
+				],
+				'expected'=>[
+					'name' => 'user_id',
+					'type' => 'int(11)',
+					'is_null' => 'NULL',
+					'default' => 'DEFAULT NULL',
+					'comment' => "COMMENT 'Проверка is_null=1, default=null'",
+				]
+			],
+
+			[
+				'input'=>[
+					array (
+						'name' => 'user_id',
+						'type' => 'id',
+						'is_null' => 1,
+						'default' => 123,
+						'comment' => "Проверка is_null=1, default=123",
+					)
+				],
+				'expected'=>[
+					'name' => 'user_id',
+					'type' => 'int(11)',
+					'is_null' => 'NULL',
+					'default' => "DEFAULT '123'",
+					'comment' => "COMMENT 'Проверка is_null=1, default=123'",
+				]
+			],
+
+			[
+				'input'=>[
+					array (
+						'name' => 'user_id',
+						'type' => 'id',
 						'is_null' => null,
 						'default' => null,
 						'comment' => "Проверка is_null=null, default=null",
