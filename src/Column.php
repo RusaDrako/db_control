@@ -58,19 +58,9 @@ class Column extends _template {
 
 	/**  */
 	public function getSQLUpdate() {
-		if(!$this->is_new && !$this->is_update && !$this->is_delete){
-			return;
-		}
+		if(!$this->is_new && !$this->is_update && !$this->is_delete){ return; }
 
-		if($this->is_delete){
-			return;
-		}
-
-		if($this->is_new){
-			$sql=$this->db->getSQLObject()->getSQLColumnAddTemplate();
-		} elseif ($this->is_update) {
-			$sql=$this->db->getSQLObject()->getSQLColumnChangeTemplate();
-		}
+		$sql=$this->_getSQLUpdate();
 
 		$template=$this->db->getSQLObject()->setColumnTemplate($this->data);
 
@@ -78,6 +68,19 @@ class Column extends _template {
 
 		$sql=$this->updateTemplate($sql);
 
+		return $sql;
+	}
+
+	/**  */
+	protected function _getSQLUpdate() {
+		$sql='';
+		if($this->is_delete){
+			$sql=$this->db->getSQLObject()->getSQLColumnDeleteTemplate();;
+		}elseif($this->is_new){
+			$sql=$this->db->getSQLObject()->getSQLColumnAddTemplate();
+		}elseif($this->is_update) {
+			$sql=$this->db->getSQLObject()->getSQLColumnChangeTemplate();
+		}
 		return $sql;
 	}
 

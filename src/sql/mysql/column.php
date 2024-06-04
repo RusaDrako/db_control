@@ -26,14 +26,21 @@ SQL;
 	/**  */
 	public static function getSQLColumnAddTemplate(){
 		return <<<SQL
-ALTER TABLE `:column_table_name:` ADD `:column_name:` :column_type: :column_is_null: :column_default: :column_comment: AFTER `:back_column:`;
+ALTER TABLE `:db_name:`.`:table_name:` ADD `:column_name:` :column_type: :column_is_null: :column_default: :column_comment: AFTER `:back_column:`;
 SQL;
 	}
 
 	/**  */
 	public static function getSQLColumnChangeTemplate(){
 		return <<<SQL
-ALTER TABLE `:column_table_name:` CHANGE `:column_name:` `:column_name:` :column_type: :column_is_null: :column_default: :column_comment:;
+ALTER TABLE `:db_name:`.`:table_name:` CHANGE `:column_name:` `:column_name:` :column_type: :column_is_null: :column_default: :column_comment:;
+SQL;
+	}
+
+	/**  */
+	public static function getSQLColumnDeleteTemplate(){
+		return <<<SQL
+ALTER TABLE `:db_name:`.`:table_name:` DROP COLUMN `:column_name:`;
 SQL;
 	}
 

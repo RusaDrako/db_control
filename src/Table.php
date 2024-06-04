@@ -107,6 +107,7 @@ class Table extends _template {
 
 		foreach($column_delete as $k=>$v){
 			if ($k!=$this->column_key->getName()) {
+				$this->addColumn($k, []);
 				$this->columns[$k]->setIsDelete(true);
 			}
 		}

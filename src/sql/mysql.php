@@ -51,6 +51,10 @@ class mysql implements inf_sql{
 		return column::updateDBColumnData($data);
 	}
 
+	public function getSQLColumnDeleteTemplate(){
+		return column::getSQLColumnDeleteTemplate();
+	}
+
 
 
 	public function getTableIndexes(Table_obj $table_obj){
