@@ -62,11 +62,11 @@ SQL;
 		# Настройка типа
 		$template['type']=static::updateAliasType($data['type']);
 		# Настройка значения null
-		$template['is_null']=static::updateAliasIsNull($data['type']);
+		$template['is_null']=static::updateAliasIsNull($data['is_null']);
 		# Настройка значения по умолчанию
 		$template['default']=static::updateAliasDefault($data['default'], $data['is_null']);
 		# Настройка комментария
-		$template['comment']==static::updateAliasComment($data['comment']);
+		$template['comment']=static::updateAliasComment($data['comment']);
 
 		return $template;
 	}
@@ -106,7 +106,7 @@ SQL;
 	public static function updateDBColumnData($data){
 		$data_control=[
 			"name"=>$data["COLUMN_NAME"],
-			"type"=>$data["DATA_TYPE"] . (($data["CHARACTER_MAXIMUM_LENGTH"] && !in_array($data["DATA_TYPE"], ['text']))? "({$data["CHARACTER_MAXIMUM_LENGTH"]})" : ''),
+			"type"=>$data["COLUMN_TYPE"],
 			"is_null"=>strtoupper($data["IS_NULLABLE"])=='YES' ? 1 : 0,
 			"default"=>($data["COLUMN_DEFAULT"]===NULL && strtoupper($data["IS_NULLABLE"])=='YES') ? 'NULL' : $data["COLUMN_DEFAULT"],
 			"comment"=>$data["COLUMN_COMMENT"],
