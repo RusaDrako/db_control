@@ -3,10 +3,9 @@
 use RusaDrako\db_update\DB;
 use RusaDrako\driver_db\DB as DB_driver;
 
-require_once(__DIR__ . '/../src/autoload.php');
-$config=require_once(__DIR__ . '/config.php');
 require_once(__DIR__ . '/../vendor/autoload.php');
 
+$config=require_once(__DIR__ . '/config.php');
 $db = new DB_driver();
 
 $db_key = 'mysql';
@@ -34,6 +33,7 @@ foreach($arr as $k=>$v){
 	echo $k;
 	if(substr($k, 0, 1)!='-'){
 		echo ' - выполнить';
+		echo ' - ' . $v;
 //		$dbConnector->query($v);
 	}
 	echo PHP_EOL;

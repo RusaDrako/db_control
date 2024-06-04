@@ -1,6 +1,6 @@
 <?php
 
-namespace RusaDrako\db_update;
+namespace RusaDrako\db_control;
 
 require_once('trt_status.php');
 require_once('_template.php');
