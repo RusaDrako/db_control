@@ -5,15 +5,17 @@ namespace RusaDrako\db_update\sql\mysql;
 class column{
 
 	static protected $type_aliases=[
-		'id'=>'int(11)',
-		'guid'=>'varchar(32)',
-		'int'=>'int(11)',
-		'checkbox'=>'int(1)',
-		'priority'=>'int(3)',
-		'select_table'=>'int(11)',
-		'select_list'=>'varchar(256)',
-		'text'=>'text',
-		'serialized'=>'mediumtext',
+		'id'=>['type'=>'int(11)'],
+		'guid'=>['type'=>'varchar(32)'],
+		'int'=>['type'=>'int(11)'],
+		'checkbox'=>['type'=>'int(1)'],
+		'checkbox_time'=>['type'=>'datetime', 'is_null'=>1, "default"=>'NULL'],
+		'priority'=>['type'=>'int(3)'],
+		'select_table'=>['type'=>'int(11)'],
+		'select_list'=>['type'=>'varchar(256)'],
+		'text'=>['type'=>'text'],
+		'serialized'=>['type'=>'mediumtext'],
+		'create'=>['type'=>'datetime', 'is_null'=>1, 'default'=>'CURRENT_TIMESTAMP'],
 	];
 
 	/**  */
@@ -25,23 +27,29 @@ SQL;
 
 	/**  */
 	public static function getSQLColumnAddTemplate(){
-		return <<<SQL
+		return [
+			<<<SQL
 ALTER TABLE `:db_name:`.`:table_name:` ADD `:column_name:` :column_type: :column_is_null: :column_default: :column_comment: AFTER `:back_column:`;
-SQL;
+SQL
+		];
 	}
 
 	/**  */
 	public static function getSQLColumnChangeTemplate(){
-		return <<<SQL
+		return [
+			<<<SQL
 ALTER TABLE `:db_name:`.`:table_name:` CHANGE `:column_name:` `:column_name:` :column_type: :column_is_null: :column_default: :column_comment:;
-SQL;
+SQL
+		];
 	}
 
 	/**  */
 	public static function getSQLColumnDeleteTemplate(){
-		return <<<SQL
+		return [
+			<<<SQL
 ALTER TABLE `:db_name:`.`:table_name:` DROP COLUMN `:column_name:`;
-SQL;
+SQL
+		];
 	}
 
 	/**  */
@@ -54,8 +62,14 @@ SQL;
 			"comment"=>null,
 		];
 
+		$updateSettings=array_key_exists($data['type'], static::$type_aliases)
+			? static::$type_aliases[$data['type']]
+			: [];
+
 		$data=array_intersect_key($data, $data_control);
-		$data=array_merge($data_control, $data);
+		$data=array_merge($data_control, $data, $updateSettings);
+
+//		$data=array_merge($data_control, $data);
 
 		# Настройка имени
 		$template['name']=static::updateAliasName($data['name']);
@@ -72,35 +86,35 @@ SQL;
 	}
 
 	/**  */
-	public static function updateAliasName($data){
-		return (string) $data;
+	public static function updateAliasName($value){
+		return (string) $value;
 	}
 
 	/**  */
-	public static function updateAliasType($data){
-		return array_key_exists($data, static::$type_aliases)
-			? static::$type_aliases[$data]
-			: $data;
+	public static function updateAliasType($value){
+		return $value; /*array_key_exists($value, static::$type_aliases)
+			? static::$type_aliases[$value]['type']
+			: $value;*/
 	}
 
 	/**  */
-	public static function updateAliasIsNull($data){
-		return $data ? "NULL" : "NOT NULL";
+	public static function updateAliasIsNull($value){
+		return $value ? "NULL" : "NOT NULL";
 	}
 
 	/**  */
-	public static function updateAliasDefault($data_def, $data_is_null){
-		if($data_def===null && $data_is_null)                 { return 'DEFAULT NULL';}
-		if($data_def===null)                                  { return NULL;}
-		if(strtoupper($data_def)=='NULL' && !$data_is_null)   { return NULL;}
-		if(strtoupper($data_def)=='NULL')                     { return 'DEFAULT NULL';}
-		if(strtoupper($data_def)=='CURRENT_TIMESTAMP')        { return 'DEFAULT CURRENT_TIMESTAMP';}
-		return "DEFAULT '{$data_def}'";
+	public static function updateAliasDefault($value_def, $value_is_null){
+		if($value_def===null && $value_is_null)                 { return 'DEFAULT NULL';}
+		if($value_def===null)                                  { return NULL;}
+		if(strtoupper($value_def)=='NULL' && !$value_is_null)   { return NULL;}
+		if(strtoupper($value_def)=='NULL')                     { return 'DEFAULT NULL';}
+		if(strtoupper($value_def)=='CURRENT_TIMESTAMP')        { return 'DEFAULT CURRENT_TIMESTAMP';}
+		return "DEFAULT '{$value_def}'";
 	}
 
 	/**  */
-	public static function updateAliasComment($data){
-		return $data ? "COMMENT '{$data}'" : '';
+	public static function updateAliasComment($value){
+		return $value ? "COMMENT '{$value}'" : '';
 	}
 
 	/**  */

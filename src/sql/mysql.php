@@ -13,6 +13,10 @@ class mysql implements inf_sql{
 		return table::getAllTables();
 	}
 
+	public function getTableName($data){
+		return table::getTableName($data);
+	}
+
 	public function getSQLTableDeleteTemplate(){
 		return table::getSQLTableDeleteTemplate();
 	}

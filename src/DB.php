@@ -7,6 +7,7 @@ namespace RusaDrako\db_update;
 class DB extends _template {
 
 	const SQL_TYPE__MYSQL='mysql';
+	const SQL_TYPE__SQLLITE3='sqlite3';
 
 	/** @var array Свойства */
 	protected $data=[
@@ -54,6 +55,9 @@ class DB extends _template {
 		$this->template[':db_name:']=$name;
 
 		switch($sql_type){
+			case DB::SQL_TYPE__SQLLITE3:
+				$this->setSQLObject(new sql\sqlite3());
+				break;
 			case DB::SQL_TYPE__MYSQL:
 				$this->setSQLObject(new sql\mysql());
 				break;
@@ -91,7 +95,7 @@ class DB extends _template {
 
 		$exists=[];
 		foreach($tables as $k=>$v){
-			$data=array_shift($v);
+			$data=$this->getSQLObject()->getTableName($v);
 			$exists[$data]=$data;
 		}
 
@@ -124,11 +128,13 @@ class DB extends _template {
 		$arr_result=[];
 		foreach($_arr_result as $k=>$v){
 			foreach($v as $k_2=>$v_2){
-				# Заполнение шаблонов
-				$arr_result[$k_2]=$this->updateTemplate($v_2);
+				$count=count($v_2);
+				foreach($v_2 as $k_3=>$v_3){
+					# Заполнение шаблонов
+					$arr_result["{$k_2}" . ($count > 1 ? " => step {$k_3}" : '')]=$this->updateTemplate($v_3);
+				}
 			}
 		}
-
 		return $arr_result;
 	}
 

@@ -60,13 +60,15 @@ class Column extends _template {
 	public function getSQLUpdate() {
 		if(!$this->is_new && !$this->is_update && !$this->is_delete){ return; }
 
-		$sql=$this->_getSQLUpdate();
+		$_sql=$this->_getSQLUpdate();
 
 		$template=$this->db->getSQLObject()->setColumnTemplate($this->data);
 
-		$sql = str_replace(array_keys($template), $template, $sql);
-
-		$sql=$this->updateTemplate($sql);
+		$sql=[];
+		foreach($_sql as $k=>$v){
+			$v=str_replace(array_keys($template), $template, $v);
+			$sql[]=$this->updateTemplate($v);
+		}
 
 		return $sql;
 	}
