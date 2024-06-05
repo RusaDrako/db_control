@@ -8,45 +8,60 @@ require_once(__DIR__ . '/../vendor/autoload.php');
 $config=require_once(__DIR__ . '/config.php');
 $db = new DB_driver();
 
-$db_key = 'mysql';
-
-$arr_db_set = [
-	'DRIVER' => DB_driver::DRV_MYSQLI,
-	'HOST' => 'localhost',
-	'USER' => 'root',
-	'PASS' => '',
-	'DBNAME' => 'test_db_control',
+$arr_db_set['mysql'] = [
+	'driver' => DB::SQL_TYPE__MYSQL,
+	'setting' => [
+		'DRIVER' => DB_driver::DRV_MYSQLI,
+		'HOST' => 'localhost',
+		'USER' => 'root',
+		'PASS' => '',
+		'DBNAME' => 'test_db_control',
+	]
 ];
 
-$db->setDB($db_key, $arr_db_set);
+foreach($arr_db_set as $k=>$v){
 
-$dbConnector=$db->getDBConnect($db_key);
-
-$dbUpdate=new DB('test_db_control', $config, DB::SQL_TYPE__MYSQL, $dbConnector);
-
-$arr=$dbUpdate->updateDB();
-
-//var_dump($dbUpdate);
-//exit;
-
-foreach($arr as $k=>$v){
 	echo PHP_EOL;
 	echo '================================================================================';
 	echo PHP_EOL;
-	echo $k;
-	if(substr($k, 0, 1)!='-'){
-		echo PHP_EOL;
-		echo "\t- выполнить";
-		try{
-			$dbConnector->query($v);
-		}catch(\ RusaDrako\driver_db\drivers\DriverDB $e){
-			echo PHP_EOL;
-			echo "\t{$e->getMessage()}";
-		}catch(\Exception $e){
-			echo PHP_EOL;
-			echo "\t" . get_class($e) . " {$e->getMessage()}";
-		}
-	}
+	echo '================================================================================';
 	echo PHP_EOL;
-	echo "\t{$v}";
+	echo "База данных: {$k}";
+	echo PHP_EOL;
+	echo '================================================================================';
+	echo PHP_EOL;
+	echo '================================================================================';
+	$db->setDB($k, $v['setting']);
+	$dbConnector=$db->getDBConnect($k);
+
+	$dbUpdate=new DB('test_db_control', $config, $v['driver'], $dbConnector);
+
+	$arr=$dbUpdate->updateDB();
+
+	foreach($arr as $k_sql=>$v_sql){
+		echo PHP_EOL;
+		echo $k_sql;
+		if(substr($k_sql, 0, 1)!='-'){
+			try{
+				$dbConnector->query($v_sql);
+				echo " - готово";
+			}catch(\ RusaDrako\driver_db\drivers\DriverDB $e){
+				echo PHP_EOL;
+				echo "\t{$e->getMessage()}";
+			}catch(\Exception $e){
+				echo PHP_EOL;
+				echo "\t" . get_class($e) . " {$e->getMessage()}";
+			}
+		} else {
+			echo PHP_EOL;
+			echo "\t{$v_sql}";
+		}
+		echo PHP_EOL;
+		echo '================================================================================';
+	}
 }
+
+echo PHP_EOL;
+echo PHP_EOL;
+echo 'Готово';
+
