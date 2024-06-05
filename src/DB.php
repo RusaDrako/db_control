@@ -7,7 +7,6 @@ namespace RusaDrako\db_update;
 class DB extends _template {
 
 	const SQL_TYPE__MYSQL='mysql';
-	const SQL_TYPE__SQLLITE3='sqlite3';
 
 	/** @var array Свойства */
 	protected $data=[
@@ -55,9 +54,6 @@ class DB extends _template {
 		$this->template[':db_name:']=$name;
 
 		switch($sql_type){
-			case DB::SQL_TYPE__SQLLITE3:
-				$this->setSQLObject(new sql\sqlite3());
-				break;
 			case DB::SQL_TYPE__MYSQL:
 				$this->setSQLObject(new sql\mysql());
 				break;
