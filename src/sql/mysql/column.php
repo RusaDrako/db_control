@@ -14,6 +14,7 @@ class column{
 		'select_table'=>['type'=>'int(11)'],
 		'select_list'=>['type'=>'varchar(256)'],
 		'text'=>['type'=>'text'],
+		'text_mid'=>['type'=>'mediumtext'],
 		'serialized'=>['type'=>'mediumtext'],
 		'create'=>['type'=>'datetime', 'is_null'=>1, 'default'=>'CURRENT_TIMESTAMP'],
 	];
